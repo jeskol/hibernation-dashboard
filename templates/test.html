@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+  <table border=1>
+  <tr>
+    <td>Name</td>
+    <td>ServiceOwner</td>
+    <td>Tag Value</td>
+    <td>Instance State</td>
+  {% for inst in instances %}
+    <tr>
+        <td>{{ inst.tags.get('Name', 'NONE') }}</td>
+        <td><a href="{{ url_for('display_list', ownerfilter=inst.tags.get('ServiceOwner', 'NONE')) }}">{{ inst.tags.get('ServiceOwner', 'NONE') }}</a></td>
+        <td>{{ inst.tags.get('InstanceHibernate', 'NONE') }}</td>
+        {% if inst.state == 'running' %}
+            <td bgcolor='green'>{{ inst.state }}</td>
+        {% else %}
+            <td bgcolor='red'><b>{{ inst.state }}</b></td>
+        {% endif %}
+    </tr>
+  {% else %}
+    <tr>
+        <td colspan=4>Unbelieveable, no entries found.</td>
+    </tr>
+  {% endfor %}
+  </table>
+{% endblock %}
