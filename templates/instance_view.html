@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
+    <pre>
+        {{ inst.obj.id }}
+        Name:  {{ inst.obj.tags.get('Name', 'NONE') }}
+
+        Hibernation:
+            Start:    {{ inst.hibernation.start }}
+            Stop:     {{ inst.hibernation.stop }}
+
+            Off days: {{ inst.hibernation.days }}
+    </pre>
+{% endblock %}

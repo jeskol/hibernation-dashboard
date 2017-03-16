@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% for reg in ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2'] %}
+    {% if session['region'] == reg %}
+      {{ reg }}
+    {% else %}
+      <a href="{{ request.path }}?region={{ reg }}">{{ reg }}</a>
+    {% endif %}
+  {% endfor %}
+  <table class="results" cellspacing="0">
+  <tr class="header">
+    <td>Name</td>
+    <td>ServiceOwner</td>
+    <td>Tag Value</td>
+    <td>Instance State</td>
+  {% for inst in instances %}
+    <tr class="results">
+        <td class="results">
+            <a href="{{ url_for('display_instance', instanceid=inst.id) }}">
+                {{ inst.tags.get('Name', 'NONE') }}
+            </a>
+        </td>
+        <td class="results">
+            <a href="{{ url_for('display_list',
+                ownerfilter=inst.tags.get('ServiceOwner', 'NONE')) }}">
+                {{ inst.tags.get('ServiceOwner', 'NONE') }}
+            </a>
+        </td>
+        <td class="results">{{ inst.tags.get('InstanceHibernate', 'NONE') }}</td>
+        <td class="{{ inst.state }}">{{ inst.state }}</td>
+    </tr>
+  {% else %}
+    <tr>
+        <td colspan=4 class="results">Unbelieveable, no entries found.</td>
+    </tr>
+  {% endfor %}
+  </table>
+{% endblock %}
