@@ -1,13 +1,23 @@
 {% extends "layout.html" %}
 {% block body %}
-    <pre>
-        {{ inst.obj.id }}
-        Name:  {{ inst.obj.tags.get('Name', 'NONE') }}
-
-        Hibernation:
-            Start:    {{ inst.hibernation.start }}
-            Stop:     {{ inst.hibernation.stop }}
-
-            Off days: {{ inst.hibernation.days }}
-    </pre>
+    <h2> {{ inst.obj.id }} / {{ inst.obj.tags.get('Name', 'NONE') }} </h2>
+    <hr/>
+    <br/>
+    {% if inst.obj.state == 'stopped' %}
+      <a href="{{ url_for('start_instance', instanceid=inst.obj.id) }}">
+        {{ inst.obj.state }}
+      </a>
+    {% else %}
+      {{ inst.obj.state }}
+    {% endif %}
+    <br/><br/>
+    {% if inst.hibernation.hibernating == 1 %}
+    Hibernation On!:<br/>
+        Start:    {{ inst.hibernation.start }}<br/>
+        Stop:     {{ inst.hibernation.stop }}<br/>
+    <br/>
+        Off days: {{ inst.hibernation.days }}<br/>
+    {% else %}
+    Hibernation Off.<br/>
+    {% endif %}
 {% endblock %}

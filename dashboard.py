@@ -23,7 +23,7 @@ def _instance_list(conn, filterset):
 def _parse_hibernation(valueString):
     VALID_DAYS = set(str(x) for x in range(0, 7))
     VALID_HOURS = set(str(x) for x in range(0, 24))
-    parsed = {'days': '', 'hours': ''}
+    parsed = {'days': '', 'hours': '', 'hibernating': 0}
     if valueString.count("|"):
         hours, days = (x.strip() for x in valueString.split("|"))
     else:
@@ -32,12 +32,14 @@ def _parse_hibernation(valueString):
         days = days.split(",")
         days = [int(x) for x in days if x in VALID_DAYS]
         parsed['days'] = days
+        parsed['hibernating'] = 1
     if hours:
         if hours.count(",") == 1:
             start, stop = hours.split(",")
             if start in VALID_HOURS and start != stop and stop in VALID_HOURS:
                 parsed['start'] = start
                 parsed['stop'] = stop
+                parsed['hibernating'] = 1
     return parsed
 
 @app.before_request
@@ -73,6 +75,17 @@ def display_instance(instanceid):
     else:
         return render_template('oops.html',
             error={'message': 'No Instance Id'})
+
+@app.route('/start/<instanceid>')
+def start_instance(instanceid):
+    ec2 = boto.ec2.connect_to_region(session['region'])
+    try:
+        ec2.start_instances(instance_ids=[instanceid])
+        flash('Instance {} starting up.'.format(instanceid))
+        return redirect(url_for('display_instance', instanceid=instanceid))
+    except boto.exception.EC2ResponseError, e:
+        return render_template('oops.html', error={'message': e})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
