@@ -12,11 +12,18 @@
     {% endif %}
     <br/><br/>
     {% if inst.hibernation.hibernating == 1 %}
+    <form method=post action="{{ url_for('tag_instance', instanceid=inst.obj.id) }}">
     Hibernation On!:<br/>
-        Start:    {{ inst.hibernation.start }}<br/>
-        Stop:     {{ inst.hibernation.stop }}<br/>
+        Start: <input name="hibstart" type=text size=4 value="{{ inst.hibernation.start }}"/><br/>
+        Stop: <input name="hibstop" type=text size=4 value="{{ inst.hibernation.stop }}"/><br/>
     <br/>
-        Off days: {{ inst.hibernation.days }}<br/>
+        Off days: 
+        {% for i in [ 0, 1, 2, 3, 4, 5, 6 ] %}
+          {{ i }}:<input type=checkbox name="{{ i }}" {{ 'checked' if i in inst.hibernation.days }}/>
+        {% endfor %}
+        </br>
+        <input type=submit value="update tags"/>
+    </form>
     {% else %}
     Hibernation Off.<br/>
     {% endif %}
