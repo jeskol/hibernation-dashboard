@@ -117,5 +117,5 @@ def tag_instance(instanceid):
 
 
 if __name__ == '__main__':
-    print os.environ['AWS_ACCESS_KEY_ID']
+    print os.environ['AWS_ACCESS_KEY_ID'] + "--HAM--" + app.config['DEFAULT_REGION']
     app.run(host='0.0.0.0', port=8080)
