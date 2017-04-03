@@ -1,5 +1,6 @@
 #! /usr/bin/env python2
 
+import os
 import boto.ec2
 import boto.exception
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
@@ -116,4 +117,5 @@ def tag_instance(instanceid):
 
 
 if __name__ == '__main__':
+    print os.environ['AWS_ACCESS_KEY_ID']
     app.run(host='0.0.0.0', port=8080)
