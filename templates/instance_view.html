@@ -18,7 +18,7 @@
         Stop: <input name="hibstop" type=text size=4 value="{{ inst.hibernation.stop }}"/><br/>
     <br/>
         Off days: 
-        {% for i in [ 0, 1, 2, 3, 4, 5, 6 ] %}
+        {% for i in [ '0', '1', '2', '3', '4', '5', '6' ] %}
           {{ i }}:<input type=checkbox name="{{ i }}" {{ 'checked' if i in inst.hibernation.days }}/>
         {% endfor %}
         </br>

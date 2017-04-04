@@ -30,7 +30,7 @@ def _parse_hibernation(valueString):
         return parsed
     if days:
         days = days.split(",")
-        days = [int(x) for x in days if x in VALID_DAYS]
+        days = [x for x in days if x in VALID_DAYS]
         parsed['days'] = days
         parsed['hibernating'] = 1
     if hours:
