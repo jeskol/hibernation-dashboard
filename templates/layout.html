@@ -1,6 +1,10 @@
 <!doctype html>
+<html>
+<head>
 <title>Hibneration Dashboard</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 <h2>
   <a href="{{ url_for('display_list', ownerfilter=None) }}">
     Hibernation Dashboard
@@ -14,3 +18,5 @@
   {% endfor %}
   {% block body %}{% endblock %}
 </div>
+</body>
+</html>
